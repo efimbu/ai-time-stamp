@@ -10,6 +10,8 @@ OrangeMonkey / Tampermonkey userscript: перед отправкой сообщ
 
 Панель — маленький квадрат **+** в правом нижнем углу; клик разворачивает отладку (скан форм, лог, Stamp now).
 
+**Из коробки работает без конфига и без sink.** Три сайта зашиты в userscript (тот же набор, что в `config.example.json`). Enter / клик Send → timestamp. Sink для обычной работы не нужен.
+
 ## Что есть
 
 | Компонент | Назначение |
@@ -33,13 +35,36 @@ DeepSeek — React-controlled textarea: stamp в том же тике, что Se
 
 ## Быстрый старт
 
+1. Установи `ai-time-stamp.user.js` в **OrangeMonkey** / Tampermonkey
+2. Открой grok.com / chatgpt.com / chat.deepseek.com
+3. Панель: квадрат **+** справа снизу. `sink:off` можно игнорировать.
+
+Python, конфиг и sink не требуются.
+
+## Нужен ли sink?
+
+**Нет, для штампа времени — нет.** Userscript сам находит поле, ловит Enter / Send и вставляет метку.
+
+Sink (`sink.py` / `start_sink.bat`) — только отладка и диск:
+
+| Зачем | Без sink | С sink |
+|-------|----------|--------|
+| Timestamp на Enter / Send | да | да |
+| Grok / ChatGPT / DeepSeek из коробки | да (зашито в `.user.js`) | да (можно переопределить `config.json`) |
+| Scan forms / Copy log (буфер) | да | да |
+| Лог в `tmp/log.jsonl` | нет | да |
+| Живой конфиг селекторов без правки `.user.js` | нет | да, `GET /config` |
+
+`sink:off` в панели — нормально, если sink не запущен.
+
+Опционально, если нужен файл лога или правка селекторов без JS:
+
 1. Python 3.10+
 2. Скопируй `control/config.example.json` → `control/config.json` (как `browser_config` в vk-wall-capture)
 3. `python sink.py` или `start_sink.bat` — окно не закрывай
-4. Установи `ai-time-stamp.user.js` в **OrangeMonkey** / Tampermonkey
-5. Открой grok / ChatGPT / DeepSeek. Панель: `+` справа снизу, в шапке `sink:ok`
+4. Обнови вкладку чата; в панели `sink:ok`
 
-Логи: `tmp/log.jsonl`. Health-пинги в консоль sink не пишутся.
+Health-пинги в консоль sink не пишутся.
 
 ## Конфиг (как в ../vk)
 
@@ -76,7 +101,7 @@ Sink читает конфиг при старте и отдаёт его usersc
 
 `host` — строка для `new RegExp(host, "i")`, например `"(^|\\.)deepseek\\.com$"`.
 
-Формы на странице можно снять без правки кода: **Scan forms** пишет в панель, clipboard и `tmp/log.jsonl` (если sink запущен).
+Формы на странице можно снять без правки кода и без sink: **Scan forms** / **Copy log** (панель и буфер). В `tmp/log.jsonl` пишется только если sink запущен.
 
 ## Безопасность
 
