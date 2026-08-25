@@ -1,0 +1,49 @@
+{
+  "sink": {
+    "host": "127.0.0.1",
+    "port": 8766
+  },
+  "stamp": {
+    "enabled": true,
+    "submit_delay_ms": 80,
+    "prefix_on_input": false
+  },
+  "panel": {
+    "collapsed": true
+  },
+  "sites": [
+    {
+      "id": "grok",
+      "host": "(^|\\.)grok\\.com$",
+      "react_controlled": false,
+      "match": [
+        { "role": "textbox", "aria_label": "Ask Grok anything" },
+        { "role": "textbox", "aria_label_re": "ask grok" },
+        { "role": "textbox", "aria_label_re": "message grok" }
+      ]
+    },
+    {
+      "id": "chatgpt",
+      "host": "(^|\\.)(chatgpt\\.com|chat\\.openai\\.com)$",
+      "react_controlled": false,
+      "match": [
+        { "id": "prompt-textarea", "role": "textbox" },
+        { "id": "prompt-textarea" }
+      ]
+    },
+    {
+      "id": "deepseek",
+      "host": "(^|\\.)deepseek\\.com$",
+      "react_controlled": true,
+      "match": [
+        { "tag": "textarea", "name": "search", "placeholder": "Message DeepSeek" },
+        { "tag": "textarea", "placeholder": "Message DeepSeek" },
+        { "tag": "textarea", "name": "search", "placeholder_re": "deepseek" }
+      ],
+      "send": {
+        "path_d_prefix": "M8.3125",
+        "class_contains": ["ds-button", "ds-button--primary", "ds-button--circle"]
+      }
+    }
+  ]
+}

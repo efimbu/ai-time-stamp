@@ -1,0 +1,21 @@
+# local live config (copy from example)
+control/config.json
+
+# Python
+**/__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# runtime logs
+tmp/
+*.log
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*~
